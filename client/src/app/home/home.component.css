@@ -1,0 +1,45 @@
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.bgoftheday {
+    color: #343a40;
+}
+.error {
+    color: red;
+}
+.randomGame
+{
+    border: 2px solid black;
+    background: lightgrey;
+}
+
+.register
+{
+    border: 2px solid black;    
+}
+
+.login
+{
+    border: 2px solid black;
+
+}
+#allcontent {
+    margin-top: 20px;
+}
+.badge {
+    display: inline-block;
+    font-size: medium;
+    color: white;
+    padding: 0.8em 0.7em 0 0.7em;
+    background: #343a40;    
+    position: relative;
+}
+
+.badge:hover {
+    color: #343a40;
+    background-color: #DDD;
+    left: .1em;
+    cursor: pointer; cursor: hand;
+  }

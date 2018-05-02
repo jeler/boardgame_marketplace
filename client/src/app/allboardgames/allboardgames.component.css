@@ -1,0 +1,18 @@
+.right {
+    font-size: 16pt;
+}
+.game {
+    border: 2px solid black;
+    overflow: scroll;
+    z-index:-1
+}
+.row
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+.search
+{
+    margin-top: 20px;
+}
