@@ -15,7 +15,7 @@ export class AllboardgamesComponent implements OnInit
   
   constructor(private _httpService: HttpService, private _router: Router) { }
   user_info: any;
-  allGames: any;
+  games: any;
   session: any;
   searchText: any;
   
@@ -30,7 +30,6 @@ export class AllboardgamesComponent implements OnInit
     session_data.subscribe(data => {
       if(data["session"]== false)
       {
-        console.log("got here!")
         this._router.navigateByUrl("/")                  
       }
       else 
@@ -44,17 +43,7 @@ export class AllboardgamesComponent implements OnInit
   getGames()
   {
     let allGames = this._httpService.getAllGames().subscribe(data => {
-      console.log(data, "this is data")
-      console.log(data["games"][1]._user.first_name)
-      console.log(data["games"][1]) 
-      this.allGames = data["games"];
-    })
-  }
-
-  deleteGame(id)
-  {
-    let deleteGame = this._httpService.deleteGame(id).subscribe(data => {
-      this.getGames();                 
+      this.games = data["games"];
     })
   }
 }

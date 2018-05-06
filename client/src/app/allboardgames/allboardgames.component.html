@@ -1,84 +1,11 @@
-<!-- <div class="container"> -->
 <textarea rows="2" cols="75" class="search" [(ngModel)]="searchText" placeholder="Search for a Game!"></textarea>
 <br>
 <h1>Welcome {{user_info?.first_name}}</h1>
-<!-- <div class="game row mb-3" *ngFor="let games of allGames | filter:'title':searchText">
-    <div class="col-9">
-      {{games._id}}
-      <h2>{{games.title}}</h2>
-      <p>{{games.description}}</p>
-      <p>Condition: {{games.condition}}</p>
-    </div>
-    <div class="col-3">
-      <h2>${{games.price}}</h2>
-      <p>{{games.location}}</p>
-      <button *ngIf="(games._user._id) === (session)" class="btn btn-danger" (click)="deleteGame(games._id)">Delete</button>
-      <button *ngIf="(games._user._id) == (session)" class="btn btn-info" routerLink='/edit/{{games._id}}'>Edit Listing</button>
-      <button *ngIf="(games._user._id) != (session)" class="btn btn-info" data-toggle="modal" data-target="#contactInfoModal">Contect Seller</button>
-      {{games._user.first_name}} -->
-<!-- Modal -->
-<!-- <div class="modal fade" id="contactInfoModal" tabindex="-1" role="dialog" aria-labelledby="contactInfoLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="contactInfoLabel">Seller Details</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body" *ngIf="allGames">
-              {{games._id}}
-              {{games._user._id}}
-              {{games._user.email}}
-              {{games._user.first_name}} {{games._user.last_name}}
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div> -->
-<div class="card" *ngFor="let games of allGames | filter:'title':searchText">
-  <div class="card-header">
-    <div class="row">
-      <div class="col-6">
-        <h2>{{games.title}}</h2>
-      </div>
-      <div class="col-6 text-right">
-        <button *ngIf="(games._user._id) === (session)" class="btn btn-danger" (click)="deleteGame(games._id)">Delete</button>
-        <button *ngIf="(games._user._id) == (session)" class="btn btn-info" routerLink='/edit/{{games._id}}'>Edit Listing</button>
-        <button *ngIf="(games._user._id) != (session)" class="btn btn-info" data-toggle="modal" data-target="#contactInfoModal">Contect Seller</button>
-        <div class="modal fade" id="contactInfoModal" tabindex="-1" role="dialog" aria-labelledby="contactInfoLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="contactInfoLabel">Seller Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body" *ngIf="allGames">
-                {{games._id}} {{games._user._id}} {{games._user.email}} {{games._user.first_name}} {{games._user.last_name}}
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-6">
-        <p>Description: {{games.description}}</p>
-        <p>Condition: {{games.condition}}</p>
-      </div>
-      <div class="col-6 text-right">
-        <h2>${{games.price}}</h2>
-        <p>{{games.location}}</p>
-      </div>
-    </div>
-  </div>
-</div>
+<app-boardgame 
+*ngFor="let game of games| filter:'title':searchText" 
+[game]="game" 
+[session]="session"
+(gameDeleted)="getGames()"></app-boardgame>
+<!-- [session] = attribute from @input in boardgame component-->
+<!-- "session" = variable containing session information from allboardgames -->
+<!-- [session] = "session" : bound atrribute session to session variable from allboardgames -->

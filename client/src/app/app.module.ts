@@ -14,6 +14,9 @@ import { AllboardgamesComponent } from './allboardgames/allboardgames.component'
 import { EditBoardgamesComponent } from './edit-boardgames/edit-boardgames.component';
 import { PopularGameInfoComponent } from './popular-game-info/popular-game-info.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { DynamicModalComponent } from './dynamic-modal/dynamic-modal.component';
+import { BoardgameComponent } from './boardgame/boardgame.component';
+import { DynamicModalContentComponent } from './dynamic-modal-content/dynamic-modal-content.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,10 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     CreateBoardgameComponent,
     AllboardgamesComponent,
     EditBoardgamesComponent,
-    PopularGameInfoComponent
+    PopularGameInfoComponent,
+    DynamicModalComponent,
+    BoardgameComponent,
+    DynamicModalContentComponent
   ],
   imports: [
     BrowserModule,

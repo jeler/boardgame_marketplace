@@ -27,7 +27,7 @@ module.exports = ".right {\n    font-size: 16pt;\n}\n.game {\n    border: 2px so
 /***/ "./src/app/allboardgames/allboardgames.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"container\"> -->\n<textarea rows=\"2\" cols=\"75\" class=\"search\" [(ngModel)]=\"searchText\" placeholder=\"Search for a Game!\"></textarea>\n<br>\n<h1>Welcome {{user_info?.first_name}}</h1>\n<!-- <div class=\"game row mb-3\" *ngFor=\"let games of allGames | filter:'title':searchText\">\n    <div class=\"col-9\">\n      {{games._id}}\n      <h2>{{games.title}}</h2>\n      <p>{{games.description}}</p>\n      <p>Condition: {{games.condition}}</p>\n    </div>\n    <div class=\"col-3\">\n      <h2>${{games.price}}</h2>\n      <p>{{games.location}}</p>\n      <button *ngIf=\"(games._user._id) === (session)\" class=\"btn btn-danger\" (click)=\"deleteGame(games._id)\">Delete</button>\n      <button *ngIf=\"(games._user._id) == (session)\" class=\"btn btn-info\" routerLink='/edit/{{games._id}}'>Edit Listing</button>\n      <button *ngIf=\"(games._user._id) != (session)\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#contactInfoModal\">Contect Seller</button>\n      {{games._user.first_name}} -->\n<!-- Modal -->\n<!-- <div class=\"modal fade\" id=\"contactInfoModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"contactInfoLabel\" aria-hidden=\"true\">\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <h5 class=\"modal-title\" id=\"contactInfoLabel\">Seller Details</h5>\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n              </button>\n            </div>\n            <div class=\"modal-body\" *ngIf=\"allGames\">\n              {{games._id}}\n              {{games._user._id}}\n              {{games._user.email}}\n              {{games._user.first_name}} {{games._user.last_name}}\n            </div>\n            <div class=\"modal-footer\">\n              <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n            </div>\n          </div>\n        </div>\n      </div> -->\n<div class=\"card\" *ngFor=\"let games of allGames | filter:'title':searchText\">\n  <div class=\"card-header\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <h2>{{games.title}}</h2>\n      </div>\n      <div class=\"col-6 text-right\">\n        <button *ngIf=\"(games._user._id) === (session)\" class=\"btn btn-danger\" (click)=\"deleteGame(games._id)\">Delete</button>\n        <button *ngIf=\"(games._user._id) == (session)\" class=\"btn btn-info\" routerLink='/edit/{{games._id}}'>Edit Listing</button>\n        <button *ngIf=\"(games._user._id) != (session)\" class=\"btn btn-info\" data-toggle=\"modal\" data-target=\"#contactInfoModal\">Contect Seller</button>\n        <div class=\"modal fade\" id=\"contactInfoModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"contactInfoLabel\" aria-hidden=\"true\">\n          <div class=\"modal-dialog\" role=\"document\">\n            <div class=\"modal-content\">\n              <div class=\"modal-header\">\n                <h5 class=\"modal-title\" id=\"contactInfoLabel\">Seller Details</h5>\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                  <span aria-hidden=\"true\">&times;</span>\n                </button>\n              </div>\n              <div class=\"modal-body\" *ngIf=\"allGames\">\n                {{games._id}} {{games._user._id}} {{games._user.email}} {{games._user.first_name}} {{games._user.last_name}}\n              </div>\n              <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n              </div>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </div>\n  <div class=\"card-body\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <p>Description: {{games.description}}</p>\n        <p>Condition: {{games.condition}}</p>\n      </div>\n      <div class=\"col-6 text-right\">\n        <h2>${{games.price}}</h2>\n        <p>{{games.location}}</p>\n      </div>\n    </div>\n  </div>\n</div>"
+module.exports = "<textarea rows=\"2\" cols=\"75\" class=\"search\" [(ngModel)]=\"searchText\" placeholder=\"Search for a Game!\"></textarea>\n<br>\n<h1>Welcome {{user_info?.first_name}}</h1>\n<app-boardgame \n*ngFor=\"let game of games| filter:'title':searchText\" \n[game]=\"game\" \n[session]=\"session\"\n(gameDeleted)=\"getGames()\"></app-boardgame>\n<!-- [session] = attribute from @input in boardgame component-->\n<!-- \"session\" = variable containing session information from allboardgames -->\n<!-- [session] = \"session\" : bound atrribute session to session variable from allboardgames -->"
 
 /***/ }),
 
@@ -63,7 +63,6 @@ var AllboardgamesComponent = /** @class */ (function () {
         var session_data = this._httpService.checkSessionUser();
         session_data.subscribe(function (data) {
             if (data["session"] == false) {
-                console.log("got here!");
                 _this._router.navigateByUrl("/");
             }
             else {
@@ -75,16 +74,7 @@ var AllboardgamesComponent = /** @class */ (function () {
     AllboardgamesComponent.prototype.getGames = function () {
         var _this = this;
         var allGames = this._httpService.getAllGames().subscribe(function (data) {
-            console.log(data, "this is data");
-            console.log(data["games"][1]._user.first_name);
-            console.log(data["games"][1]);
-            _this.allGames = data["games"];
-        });
-    };
-    AllboardgamesComponent.prototype.deleteGame = function (id) {
-        var _this = this;
-        var deleteGame = this._httpService.deleteGame(id).subscribe(function (data) {
-            _this.getGames();
+            _this.games = data["games"];
         });
     };
     AllboardgamesComponent = __decorate([
@@ -227,6 +217,9 @@ var allboardgames_component_1 = __webpack_require__("./src/app/allboardgames/all
 var edit_boardgames_component_1 = __webpack_require__("./src/app/edit-boardgames/edit-boardgames.component.ts");
 var popular_game_info_component_1 = __webpack_require__("./src/app/popular-game-info/popular-game-info.component.ts");
 var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var dynamic_modal_component_1 = __webpack_require__("./src/app/dynamic-modal/dynamic-modal.component.ts");
+var boardgame_component_1 = __webpack_require__("./src/app/boardgame/boardgame.component.ts");
+var dynamic_modal_content_component_1 = __webpack_require__("./src/app/dynamic-modal-content/dynamic-modal-content.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -241,7 +234,10 @@ var AppModule = /** @class */ (function () {
                 create_boardgame_component_1.CreateBoardgameComponent,
                 allboardgames_component_1.AllboardgamesComponent,
                 edit_boardgames_component_1.EditBoardgamesComponent,
-                popular_game_info_component_1.PopularGameInfoComponent
+                popular_game_info_component_1.PopularGameInfoComponent,
+                dynamic_modal_component_1.DynamicModalComponent,
+                boardgame_component_1.BoardgameComponent,
+                dynamic_modal_content_component_1.DynamicModalContentComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -257,6 +253,88 @@ var AppModule = /** @class */ (function () {
     return AppModule;
 }());
 exports.AppModule = AppModule;
+
+
+/***/ }),
+
+/***/ "./src/app/boardgame/boardgame.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/boardgame/boardgame.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"card\">\n  <div class=\"card-header\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <h2>{{game.title}}</h2>\n        <button (click)=\"onClick()\">Click for Candy</button>\n      </div>\n      <div class=\"col-6 text-right\">\n        <button *ngIf=\"(game._user._id) === (session)\" class=\"btn btn-danger\" (click)=\"deleteGame(game._id)\">Delete</button>\n        <button *ngIf=\"(game._user._id) == (session)\" class=\"btn btn-info\" routerLink='/edit/{{game._id}}'>Edit Listing</button>\n        <button *ngIf=\"(game._user._id) != (session)\" class=\"btn btn-info\" (modalClick)=\"openSellerDetails()\" >Contect Seller</button>\n        <!-- <div class=\"modal fade\" id=\"contactInfoModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"contactInfoLabel\" aria-hidden=\"true\">\n          <div class=\"modal-dialog\" role=\"document\">\n            <div class=\"modal-content\">\n              <div class=\"modal-header\">\n                <h5 class=\"modal-title\" id=\"contactInfoLabel\">Seller Details</h5>\n                <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                  <span aria-hidden=\"true\">&times;</span>\n                </button>\n              </div>\n              <div class=\"modal-body\">\n                {{game._id}} {{game._user._id}} {{game._user.email}} {{game._user.first_name}} {{game._user.last_name}}\n              </div>\n              <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>\n              </div>\n            </div>\n          </div>\n        </div> -->\n      </div>\n    </div>\n  </div>\n  <div class=\"card-body\">\n    <div class=\"row\">\n      <div class=\"col-6\">\n        <p>Description: {{game.description}}</p>\n        <p>Condition: {{game.condition}}</p>\n      </div>\n      <div class=\"col-6 text-right\">\n        <h2>${{game.price}}</h2>\n        <p>{{game.location}}</p>\n      </div>\n    </div>\n  </div>\n</div>"
+
+/***/ }),
+
+/***/ "./src/app/boardgame/boardgame.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var http_service_1 = __webpack_require__("./src/app/http.service.ts");
+var BoardgameComponent = /** @class */ (function () {
+    // @ = signifies decorator; session = property
+    function BoardgameComponent(_httpService) {
+        this._httpService = _httpService;
+        this.isDeleted = false;
+        this.gameDeleted = new core_1.EventEmitter();
+    }
+    BoardgameComponent.prototype.ngOnInit = function () {
+    };
+    BoardgameComponent.prototype.onClick = function () {
+        console.log(this.game._id);
+        console.log(this.game);
+    };
+    BoardgameComponent.prototype.openSellerDetails = function () {
+        console.log(this.game, " this is game from 27");
+    };
+    BoardgameComponent.prototype.deleteGame = function (id) {
+        var _this = this;
+        var deleteGame = this._httpService.deleteGame(id).subscribe(function (data) {
+            console.log("deleted!");
+            _this.isDeleted = true;
+            _this.gameDeleted.emit(_this.isDeleted);
+        });
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], BoardgameComponent.prototype, "game", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], BoardgameComponent.prototype, "session", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", Object)
+    ], BoardgameComponent.prototype, "gameDeleted", void 0);
+    BoardgameComponent = __decorate([
+        core_1.Component({
+            selector: 'app-boardgame',
+            template: __webpack_require__("./src/app/boardgame/boardgame.component.html"),
+            styles: [__webpack_require__("./src/app/boardgame/boardgame.component.css")]
+        }),
+        __metadata("design:paramtypes", [http_service_1.HttpService])
+    ], BoardgameComponent);
+    return BoardgameComponent;
+}());
+exports.BoardgameComponent = BoardgameComponent;
 
 
 /***/ }),
@@ -345,6 +423,102 @@ var CreateBoardgameComponent = /** @class */ (function () {
     return CreateBoardgameComponent;
 }());
 exports.CreateBoardgameComponent = CreateBoardgameComponent;
+
+
+/***/ }),
+
+/***/ "./src/app/dynamic-modal-content/dynamic-modal-content.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var DynamicModalContentComponent = /** @class */ (function () {
+    function DynamicModalContentComponent(activeModal) {
+        this.activeModal = activeModal;
+    }
+    DynamicModalContentComponent.prototype.ngOnInit = function () {
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], DynamicModalContentComponent.prototype, "seller_details", void 0);
+    DynamicModalContentComponent = __decorate([
+        core_1.Component({
+            selector: 'app-dynamic-modal-content',
+            template: "\n  <div class=\"modal-header\">\n    <h4 class=\"modal-title\">Hi there!</h4>\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.dismiss('Cross click')\">\n      <span aria-hidden=\"true\">&times;</span>\n    </button>\n  </div>\n  <div class=\"modal-body\">\n    <p>Hello, {{name}}!</p>\n  </div>\n  <div class=\"modal-footer\">\n    <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"activeModal.close('Close click')\">Close</button>\n  </div>\n"
+        }),
+        __metadata("design:paramtypes", [ng_bootstrap_1.NgbActiveModal])
+    ], DynamicModalContentComponent);
+    return DynamicModalContentComponent;
+}());
+exports.DynamicModalContentComponent = DynamicModalContentComponent;
+
+
+/***/ }),
+
+/***/ "./src/app/dynamic-modal/dynamic-modal.component.css":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/dynamic-modal/dynamic-modal.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  dynamic-modal works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/dynamic-modal/dynamic-modal.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var ng_bootstrap_1 = __webpack_require__("./node_modules/@ng-bootstrap/ng-bootstrap/index.js");
+var DynamicModalComponent = /** @class */ (function () {
+    function DynamicModalComponent(modalService) {
+        this.modalService = modalService;
+    }
+    DynamicModalComponent.prototype.ngOnInit = function () {
+    };
+    DynamicModalComponent.prototype.open = function () {
+        var modalRef = this.modalService.open('DynamicModalContentComponent');
+    };
+    DynamicModalComponent = __decorate([
+        core_1.Component({
+            selector: 'app-dynamic-modal',
+            template: __webpack_require__("./src/app/dynamic-modal/dynamic-modal.component.html"),
+            styles: [__webpack_require__("./src/app/dynamic-modal/dynamic-modal.component.css")]
+        }),
+        __metadata("design:paramtypes", [ng_bootstrap_1.NgbModal])
+    ], DynamicModalComponent);
+    return DynamicModalComponent;
+}());
+exports.DynamicModalComponent = DynamicModalComponent;
 
 
 /***/ }),
