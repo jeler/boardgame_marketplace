@@ -54,11 +54,5 @@ export class UserDashboardComponent implements OnInit {
       this.allGames = data["games"];
       console.log(this.allGames)
     })
-  }
-  // getGame(): void {
-  //   let chosenGame = this._httpService.getGame(this.game_id).subscribe(data => {
-  //     this.game = data["game"]
-  //     console.log(this.game, "this is this.game")
-  //   })
-  // }
+  
 }

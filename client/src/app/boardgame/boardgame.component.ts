@@ -21,12 +21,6 @@ export class BoardgameComponent implements OnInit {
   ngOnInit() {
   }
 
-  onClick()
-  {
-    console.log(this.game._id);
-    console.log(this.game)
-  }
-
   openSellerDetails()
   {
     console.log(this.game," this is game from 27")
