@@ -25,5 +25,4 @@ app.all("*", (req, res, next) => {
 //     console.log("listening on port 1337");
 // })
 
-app.listen(process.env.PORT || 8080);
-// app.listen(process.env.PORT || 9090);
+app.listen(process.env.PORT || 9090);
